@@ -123,6 +123,10 @@ abstract class StandardERC20Token extends ERC20
             ;
     }
 
+    public function allowance(string $ownerAddress, string $spenderAddress)
+    {
+        return Number::toDecimalValue($this->call('allowance', [$ownerAddress, $spenderAddress])[0]->toString(), $this->decimals());
+    }
 
     public function getGasLimit($action = '')
     {

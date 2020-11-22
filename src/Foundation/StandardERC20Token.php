@@ -69,7 +69,7 @@ abstract class StandardERC20Token extends ERC20
         $amount   = Number::fromDecimalValue($amount, $this->decimals());
         $data     = $this->buildTransferData($to, $amount);
         $nonce    = Number::toHex($this->getEth()
-                                       ->getTransactionCount($from));
+                                       ->getTransactionCount($from, 'pending'));
         $gasLimit = $this->getGasLimit('transfer');
         $gasPrice = $this->getSafeGasPrice();
 
@@ -99,7 +99,7 @@ abstract class StandardERC20Token extends ERC20
         $amount   = Number::fromDecimalValue($amount, $this->decimals());
         $data     = $this->buildApproveData($spenderAddress, $amount);
         $nonce    = Number::toHex($this->getEth()
-                                       ->getTransactionCount($ownerAddress));
+                                       ->getTransactionCount($ownerAddress, 'pending'));
         $gasLimit = $this->getGasLimit('approve');
         $gasPrice = $this->getSafeGasPrice();
 
@@ -126,6 +126,43 @@ abstract class StandardERC20Token extends ERC20
     public function allowance(string $ownerAddress, string $spenderAddress)
     {
         return Number::toDecimalValue($this->call('allowance', [$ownerAddress, $spenderAddress])[0]->toString(), $this->decimals());
+    }
+
+    /**
+     * @param string $spender
+     * @param string $from
+     * @param string $to
+     * @param float $amount
+     * @return Transaction\Transaction
+     */
+    public function transferFrom(string $spender, string $from, string $to, float $amount)
+    {
+        $amount   = Number::fromDecimalValue($amount, $this->decimals());
+        $data     = $this->buildTransferFromData($from, $to, $amount);
+        $nonce    = Number::toHex($this->getEth()
+                                       ->getTransactionCount($spender, 'pending'));
+        $gasLimit = $this->getGasLimit('transferFrom');
+        $gasPrice = $this->getSafeGasPrice();
+
+        return (new TransactionBuilder())
+            ->setEth($this->getEth())
+            ->to($this->contractAddress)
+            ->nonce($nonce)
+            ->gasPrice($gasPrice)
+            ->gasLimit($gasLimit)
+            ->data($data)
+            ->amount(0)
+            ->build()
+            ;
+
+    }
+
+    public function buildTransferFromData(string $from, string $to, $amount)
+    {
+        return $this->getContract()
+                    ->at($this->contractAddress)
+                    ->getData('transferFrom', $from, $to, $amount)
+            ;
     }
 
     public function getGasLimit($action = '')

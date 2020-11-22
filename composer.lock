@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b56a72dba2321edffe0dff1b8155b94e",
+    "content-hash": "fe0aa7d4d53d5e58136c7db7dd1e0a3c",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -1011,6 +1011,52 @@
             "time": "2020-10-26T13:35:45+00:00"
         },
         {
+            "name": "web3p/ethereum-tx",
+            "version": "0.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/web3p/ethereum-tx.git",
+                "reference": "be5a1063f8cf0f9c9419be87b9c925e3d95eb6ab"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/web3p/ethereum-tx/zipball/be5a1063f8cf0f9c9419be87b9c925e3d95eb6ab",
+                "reference": "be5a1063f8cf0f9c9419be87b9c925e3d95eb6ab",
+                "shasum": ""
+            },
+            "require": {
+                "kornrunner/keccak": "~1",
+                "simplito/elliptic-php": "~1.0.6",
+                "web3p/ethereum-util": "~0.1.2",
+                "web3p/rlp": "0.3.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Web3p\\EthereumTx\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "sc0Vu",
+                    "email": "alk03073135@gmail.com"
+                }
+            ],
+            "description": "Ethereum transaction library in PHP.",
+            "support": {
+                "issues": "https://github.com/web3p/ethereum-tx/issues",
+                "source": "https://github.com/web3p/ethereum-tx/tree/0.4.1"
+            },
+            "time": "2020-11-15T09:53:10+00:00"
+        },
+        {
             "name": "web3p/ethereum-util",
             "version": "0.1.2",
             "source": {
@@ -1054,6 +1100,46 @@
                 "source": "https://github.com/web3p/ethereum-util/tree/master"
             },
             "time": "2019-11-23T08:43:24+00:00"
+        },
+        {
+            "name": "web3p/rlp",
+            "version": "0.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/web3p/rlp.git",
+                "reference": "bc9e29f7a1f658408f25322ea21ff5687a851470"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/web3p/rlp/zipball/bc9e29f7a1f658408f25322ea21ff5687a851470",
+                "reference": "bc9e29f7a1f658408f25322ea21ff5687a851470",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Web3p\\RLP\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "sc0Vu",
+                    "email": "alk03073135@gmail.com"
+                }
+            ],
+            "description": "Recursive Length Prefix Encoding in PHP.",
+            "support": {
+                "issues": "https://github.com/web3p/rlp/issues",
+                "source": "https://github.com/web3p/rlp/tree/master"
+            },
+            "time": "2019-11-23T08:20:30+00:00"
         }
     ],
     "packages-dev": [],

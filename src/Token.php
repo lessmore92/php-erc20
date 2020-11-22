@@ -7,7 +7,8 @@
 
 namespace Lessmore\Ethereum;
 
-use Lessmore\Utils\Number;
+use Lessmore\Ethereum\Foundation\StandardERC20Token;
+use Lessmore\Ethereum\Utils\Number;
 
 
 class Token extends StandardERC20Token
@@ -47,22 +48,5 @@ class Token extends StandardERC20Token
     public function transfer(string $to, $amount, string $privateKey)
     {
         $data = $this->buildTransferData($to, $amount);
-    }
-
-    public function buildTransferData(string $to, $amount)
-    {
-        return $this->getContract()
-                    ->at($this->contractAddress)
-                    ->getData('transfer', $to, $amount)
-            ;
-    }
-
-    function privateKeyToAddress(string $privateKey): string
-    {
-        $util      = new Util();
-        $publicKey = $util->privateKeyToPublicKey($privateKey);
-        $address   = $util->publicKeyToAddress($publicKey);
-
-        return $address;
     }
 }

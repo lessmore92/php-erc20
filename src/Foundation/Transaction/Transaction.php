@@ -23,6 +23,7 @@ class Transaction
 
     public function sign($privateKey)
     {
+        $privateKey = str_replace('0x', '', $privateKey);
         return new SignedTransaction('0x' . $this->transaction->getRaw($privateKey), $this->eth);
     }
 }

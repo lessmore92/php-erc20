@@ -73,14 +73,15 @@ abstract class StandardERC20Token extends ERC20
         $gasLimit = $this->getGasLimit('transfer');
         $gasPrice = $this->getSafeGasPrice();
 
-        return (new TransactionBuilder())->to($this->contractAddress)
-                                         ->nonce($nonce)
-                                         ->gasPrice($gasPrice)
-                                         ->gasLimit($gasLimit)
-                                         ->data($data)
-                                         ->amount(0)
-                                         ->setEth($this->getEth())
-                                         ->build()
+        return (new TransactionBuilder())
+            ->setEth($this->getEth())
+            ->to($this->contractAddress)
+            ->nonce($nonce)
+            ->gasPrice($gasPrice)
+            ->gasLimit($gasLimit)
+            ->data($data)
+            ->amount(0)
+            ->build()
             ;
 
     }
@@ -93,6 +94,35 @@ abstract class StandardERC20Token extends ERC20
             ;
     }
 
+    public function approve(string $ownerAddress, string $spenderAddress, string $amount)
+    {
+        $amount   = Number::fromDecimalValue($amount, $this->decimals());
+        $data     = $this->buildApproveData($spenderAddress, $amount);
+        $nonce    = Number::toHex($this->getEth()
+                                       ->getTransactionCount($ownerAddress));
+        $gasLimit = $this->getGasLimit('approve');
+        $gasPrice = $this->getSafeGasPrice();
+
+        return (new TransactionBuilder())
+            ->setEth($this->getEth())
+            ->to($this->contractAddress)
+            ->nonce($nonce)
+            ->gasPrice($gasPrice)
+            ->gasLimit($gasLimit)
+            ->data($data)
+            ->amount(0)
+            ->build()
+            ;
+    }
+
+    public function buildApproveData(string $to, $amount)
+    {
+        return $this->getContract()
+                    ->at($this->contractAddress)
+                    ->getData('approve', $to, $amount)
+            ;
+    }
+
 
     public function getGasLimit($action = '')
     {
@@ -102,12 +132,12 @@ abstract class StandardERC20Token extends ERC20
     public function getSafeGasPrice()
     {
         $gasPrice = $this->getEth()
-            ->gasPrice()
+                         ->gasPrice()
         ;
 
         $modified = floatval(Number::fromWei($gasPrice, 'gwei')) + $this->gasPriceModifier;
         return Number::toWei($modified, 'gwei')
-            ->toString()
+                     ->toString()
             ;
     }
 }

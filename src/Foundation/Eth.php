@@ -19,6 +19,13 @@ class Eth extends EthBase
 
     public function gasPrice()
     {
-        return $this->call('gasPrice')->toString();
+        return $this->call('gasPrice')
+                    ->toString()
+            ;
+    }
+
+    public function sendRawTransaction(string $hash)
+    {
+        return (string)$this->call('sendRawTransaction', [$hash]);
     }
 }

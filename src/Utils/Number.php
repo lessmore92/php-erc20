@@ -13,10 +13,17 @@ use Web3\Utils;
 
 class Number
 {
-    public static function scaleDown($number, $scale)
+    public static function toDecimalValue($number, $scale)
     {
         list($decimal, $precious) = (new BigInteger($number))->divide(self::bigIntegerPow(10, $scale));
         return $decimal->toString() . '.' . $precious->toString();
+    }
+
+    public static function fromDecimalValue($number, $scale): string
+    {
+        return (new BigInteger($number))->multiply(self::bigIntegerPow(10, $scale))
+                                        ->toString()
+            ;
     }
 
     public static function bigIntegerPow($base, $power)
@@ -38,5 +45,10 @@ class Number
     public static function toWei($number, $unit)
     {
         return Utils::toWei($number, $unit);
+    }
+
+    public static function toHex($number)
+    {
+        return Utils::toHex($number);
     }
 }

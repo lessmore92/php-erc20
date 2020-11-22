@@ -7,25 +7,28 @@
 
 namespace Lessmore\Ethereum\Foundation;
 
+use Lessmore\Ethereum\Foundation\Transaction\TransactionBuilder;
 use Lessmore\Ethereum\Utils\Number;
 
 
 abstract class StandardERC20Token extends ERC20
 {
     protected $contractAddress;
-    protected $gasLimits        = [
+    protected $decimals;
+    protected $gasLimits = [
         'approve'      => 50000,
         'transfer'     => 50000,
         'transferFrom' => 50000,
         'default'      => 50000,
     ];
-    protected $gasPriceModifier = 1;
 
     public function __construct($ethClient, $timeout = 3)
     {
-        $abi = file_get_contents(__DIR__ . '/../../resources/erc20.abi.json');
+        $abi = file_get_contents(__DIR__ . '/../resources/erc20.abi.json');
         parent::__construct($this->contractAddress, $abi, $ethClient, $timeout);
     }
+
+    protected $gasPriceModifier = 0;
 
     public function name(): string
     {
@@ -39,7 +42,11 @@ abstract class StandardERC20Token extends ERC20
 
     public function decimals(): int
     {
-        return intval($this->call('decimals')[0]->toString());
+        if ($this->decimals)
+        {
+            return $this->decimals;
+        }
+        return $this->decimals = intval($this->call('decimals')[0]->toString());
     }
 
     /**
@@ -48,24 +55,33 @@ abstract class StandardERC20Token extends ERC20
      */
     public function balanceOf(string $address)
     {
-        return Number::scaleDown($this->call('balanceOf', [$address])['balance']->toString(), $this->decimals());
+        return Number::toDecimalValue($this->call('balanceOf', [$address])['balance']->toString(), $this->decimals());
     }
 
-    public function transfer(string $to, $amount, string $privateKey)
+    /**
+     * @param string $from
+     * @param string $to
+     * @param float $amount
+     * @return Transaction\Transaction
+     */
+    public function transfer(string $from, string $to, float $amount)
     {
-        /*
-        $data = $this->buildTransferData($to, $amount);
-        //$fromAddress = KeyPair::privateKeyToAddress($privateKey);
-        $fromAddress = "0x417d3dac69a08982cc6905723a5e2cc6c5b01735";
-
-        $nonce = $this->getEth()
-                      ->getTransactionCount($fromAddress, 'pending')
-        ;
-        */
-
+        $amount   = Number::fromDecimalValue($amount, $this->decimals());
+        $data     = $this->buildTransferData($to, $amount);
+        $nonce    = Number::toHex($this->getEth()
+                                       ->getTransactionCount($from));
+        $gasLimit = $this->getGasLimit('transfer');
         $gasPrice = $this->getSafeGasPrice();
 
-        $gasLimit = $this->getGasLimit('transfer');
+        return (new TransactionBuilder())->to($this->contractAddress)
+                                         ->nonce($nonce)
+                                         ->gasPrice($gasPrice)
+                                         ->gasLimit($gasLimit)
+                                         ->data($data)
+                                         ->amount(0)
+                                         ->setEth($this->getEth())
+                                         ->build()
+            ;
 
     }
 
@@ -86,12 +102,12 @@ abstract class StandardERC20Token extends ERC20
     public function getSafeGasPrice()
     {
         $gasPrice = $this->getEth()
-                         ->gasPrice()
+            ->gasPrice()
         ;
 
         $modified = floatval(Number::fromWei($gasPrice, 'gwei')) + $this->gasPriceModifier;
         return Number::toWei($modified, 'gwei')
-                     ->toString()
+            ->toString()
             ;
     }
 }

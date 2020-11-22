@@ -1,0 +1,21 @@
+{
+  "name": "lessmore/erc20",
+  "description": "",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Lessmore92",
+      "email": "bahramisoft@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Lessmore\\": "src"
+    }
+  },
+  "minimum-stability": "dev",
+  "require": {
+    "sc0vu/web3.php": "0.1.4",
+    "web3p/ethereum-util": "0.1.2"
+  }
+}

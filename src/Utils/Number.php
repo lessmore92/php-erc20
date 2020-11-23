@@ -13,17 +13,14 @@ use Web3\Utils;
 
 class Number
 {
-    public static function toDecimalValue($number, $scale)
+    public static function toDecimalValue(string $number, int $decimals)
     {
-        list($decimal, $precious) = (new BigInteger($number))->divide(self::bigIntegerPow(10, $scale));
-        return $decimal->toString() . '.' . $precious->toString();
+        return bcdiv($number, bcpow("10", strval($decimals)), $decimals);
     }
 
-    public static function fromDecimalValue($number, $scale): string
+    public static function fromDecimalValue(string $number, int $decimals): string
     {
-        return (new BigInteger($number))->multiply(self::bigIntegerPow(10, $scale))
-                                        ->toString()
-            ;
+        return bcmul($number, bcpow("10", strval($decimals)));
     }
 
     public static function bigIntegerPow($base, $power)

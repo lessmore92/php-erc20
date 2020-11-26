@@ -7,7 +7,9 @@
 
 namespace Lessmore\Ethereum\Foundation;
 
+use Lessmore\Ethereum\Foundation\Contracts\EventLogBuilderInterface;
 use Lessmore\Ethereum\Foundation\Transaction\TransactionBuilder;
+use Lessmore\Ethereum\Utils\Address;
 use Lessmore\Ethereum\Utils\Number;
 
 
@@ -69,7 +71,7 @@ abstract class StandardERC20Token extends ERC20
         $amount   = Number::scaleUp($amount, $this->decimals());
         $data     = $this->buildTransferData($to, $amount);
         $nonce    = Number::toHex($this->getEth()
-                                       ->getTransactionCount($from, 'pending'));
+            ->getTransactionCount($from, 'pending'));
         $gasLimit = $this->getGasLimit('transfer');
         $gasPrice = $this->getSafeGasPrice();
 
@@ -99,7 +101,7 @@ abstract class StandardERC20Token extends ERC20
         $amount   = Number::scaleUp($amount, $this->decimals());
         $data     = $this->buildApproveData($spenderAddress, $amount);
         $nonce    = Number::toHex($this->getEth()
-                                       ->getTransactionCount($ownerAddress, 'pending'));
+            ->getTransactionCount($ownerAddress, 'pending'));
         $gasLimit = $this->getGasLimit('approve');
         $gasPrice = $this->getSafeGasPrice();
 
@@ -140,7 +142,7 @@ abstract class StandardERC20Token extends ERC20
         $amount   = Number::scaleUp($amount, $this->decimals());
         $data     = $this->buildTransferFromData($from, $to, $amount);
         $nonce    = Number::toHex($this->getEth()
-                                       ->getTransactionCount($spender, 'pending'));
+            ->getTransactionCount($spender, 'pending'));
         $gasLimit = $this->getGasLimit('transferFrom');
         $gasPrice = $this->getSafeGasPrice();
 
@@ -163,6 +165,33 @@ abstract class StandardERC20Token extends ERC20
                     ->at($this->contractAddress)
                     ->getData('transferFrom', $from, $to, $amount)
             ;
+    }
+
+    public function getEventLogFormatter(): EventLogBuilderInterface
+    {
+        $builder = new EventLogBuilder();
+        $builder->setContract($this);
+        return $builder;
+    }
+
+    public function transactions(string $address, $fromBlock = '0x0', $toBlock = 'latest')
+    {
+        $topic_address = Address::toTopic($address);
+
+        $logs = $this->getEth()
+                     ->addCall('sent', 'getLogs', [['address' => $this->contractAddress, 'topics' => [null, $topic_address], 'fromBlock' => $fromBlock, 'toBlock' => $toBlock]])
+                     ->addCall('receive', 'getLogs', [['address' => $this->contractAddress, 'topics' => [null, null, $topic_address], 'fromBlock' => $fromBlock, 'toBlock' => $toBlock]])
+                     ->batchCall()
+        ;
+        $txs  = [];
+        foreach (call_user_func_array('array_merge', $logs) as $log)
+        {
+            $txs[] = $this->getEventLogFormatter()
+                          ->build($log)
+            ;
+        }
+
+        return $txs;
     }
 
     public function getGasLimit($action = '')

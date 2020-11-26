@@ -7,6 +7,7 @@
 
 namespace Lessmore\Ethereum\Foundation;
 
+use kornrunner\Keccak;
 use Web3\Contract;
 use Web3\Providers\HttpProvider;
 use Web3\RequestManagers\HttpRequestManager;
@@ -34,6 +35,10 @@ abstract class ERC20
      * @var Eth
      */
     private $eth;
+    /**
+     * @var array
+     */
+    private $topics = [];
 
     /**
      * ERC20 constructor.
@@ -50,6 +55,7 @@ abstract class ERC20
         $this->contractAddress = $contractAddress;
         $this->contract        = new Contract($web3->getProvider(), $abi);
         $this->eth             = new Eth($web3);
+        $this->generateTopics();
     }
 
     /**
@@ -78,6 +84,14 @@ abstract class ERC20
     }
 
     /**
+     * @return array
+     */
+    public function getTopics()
+    {
+        return $this->topics;
+    }
+
+    /**
      * @return Contract
      */
     public function getContract()
@@ -99,5 +113,15 @@ abstract class ERC20
     public function getWeb3()
     {
         return $this->web3;
+    }
+
+    private function generateTopics()
+    {
+        $events = $this->contract->getEvents();
+        foreach ($events as $key => $event)
+        {
+            $topic              = sprintf("%s(%s)", $key, implode(',', array_column($event['inputs'], 'type')));
+            $this->topics[$key] = Keccak::hash($topic, 256);
+        }
     }
 }

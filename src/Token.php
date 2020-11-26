@@ -42,11 +42,6 @@ class Token extends StandardERC20Token
      */
     public function balanceOf(string $address)
     {
-        return Number::toDecimalValue($this->call('balanceOf', [$address])['balance']->toString(), $this->decimals());
-    }
-
-    public function transfer(string $to, $amount, string $privateKey)
-    {
-        $data = $this->buildTransferData($to, $amount);
+        return Number::scaleDown($this->call('balanceOf', [$address])['balance']->toString(), $this->decimals());
     }
 }

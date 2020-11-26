@@ -13,12 +13,12 @@ use Web3\Utils;
 
 class Number
 {
-    public static function toDecimalValue(string $number, int $decimals)
+    public static function scaleDown(string $number, int $decimals)
     {
         return bcdiv($number, bcpow("10", strval($decimals)), $decimals);
     }
 
-    public static function fromDecimalValue(string $number, int $decimals): string
+    public static function scaleUp(string $number, int $decimals): string
     {
         return bcmul($number, bcpow("10", strval($decimals)));
     }

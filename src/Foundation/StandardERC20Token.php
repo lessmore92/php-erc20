@@ -55,7 +55,7 @@ abstract class StandardERC20Token extends ERC20
      */
     public function balanceOf(string $address)
     {
-        return Number::toDecimalValue($this->call('balanceOf', [$address])['balance']->toString(), $this->decimals());
+        return Number::scaleDown($this->call('balanceOf', [$address])['balance']->toString(), $this->decimals());
     }
 
     /**
@@ -66,7 +66,7 @@ abstract class StandardERC20Token extends ERC20
      */
     public function transfer(string $from, string $to, float $amount)
     {
-        $amount   = Number::fromDecimalValue($amount, $this->decimals());
+        $amount   = Number::scaleUp($amount, $this->decimals());
         $data     = $this->buildTransferData($to, $amount);
         $nonce    = Number::toHex($this->getEth()
                                        ->getTransactionCount($from, 'pending'));
@@ -89,14 +89,14 @@ abstract class StandardERC20Token extends ERC20
     public function buildTransferData(string $to, $amount)
     {
         return $this->getContract()
-                    ->at($this->contractAddress)
-                    ->getData('transfer', $to, $amount)
+            ->at($this->contractAddress)
+            ->getData('transfer', $to, $amount)
             ;
     }
 
     public function approve(string $ownerAddress, string $spenderAddress, string $amount)
     {
-        $amount   = Number::fromDecimalValue($amount, $this->decimals());
+        $amount   = Number::scaleUp($amount, $this->decimals());
         $data     = $this->buildApproveData($spenderAddress, $amount);
         $nonce    = Number::toHex($this->getEth()
                                        ->getTransactionCount($ownerAddress, 'pending'));
@@ -118,14 +118,14 @@ abstract class StandardERC20Token extends ERC20
     public function buildApproveData(string $to, $amount)
     {
         return $this->getContract()
-                    ->at($this->contractAddress)
-                    ->getData('approve', $to, $amount)
+            ->at($this->contractAddress)
+            ->getData('approve', $to, $amount)
             ;
     }
 
     public function allowance(string $ownerAddress, string $spenderAddress)
     {
-        return Number::toDecimalValue($this->call('allowance', [$ownerAddress, $spenderAddress])[0]->toString(), $this->decimals());
+        return Number::scaleDown($this->call('allowance', [$ownerAddress, $spenderAddress])[0]->toString(), $this->decimals());
     }
 
     /**
@@ -137,7 +137,7 @@ abstract class StandardERC20Token extends ERC20
      */
     public function transferFrom(string $spender, string $from, string $to, float $amount)
     {
-        $amount   = Number::fromDecimalValue($amount, $this->decimals());
+        $amount   = Number::scaleUp($amount, $this->decimals());
         $data     = $this->buildTransferFromData($from, $to, $amount);
         $nonce    = Number::toHex($this->getEth()
                                        ->getTransactionCount($spender, 'pending'));

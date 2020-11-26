@@ -21,6 +21,8 @@ abstract class EthBase
      */
     private $eth;
 
+    private $batchCalls = [];
+
     /**
      * ERC20 constructor.
      * @param Web3 $web3
@@ -54,4 +56,42 @@ abstract class EthBase
 
         return $result;
     }
+
+    public function addCall(string $id, string $method, array $arguments = [])
+    {
+        $this->batchCalls[$id] = ['method' => $method, 'params' => $arguments];
+        return $this;
+    }
+
+
+    public function batchCall()
+    {
+        $this->eth->batch(true);
+        $callResultMap = [];
+        $counter       = 0;
+        foreach ($this->batchCalls as $key => $call)
+        {
+            $callResultMap[$counter] = $key;
+            call_user_func_array([$this->eth, $call['method']], $call['params']);
+            $counter++;
+        }
+
+        $result = null;
+        $this->eth->getProvider()
+                  ->execute(function ($err, $responses) use (&$result, $callResultMap) {
+                      if ($err)
+                      {
+                          throw $err;
+                      }
+
+                      foreach ($responses as $key => $response)
+                      {
+                          $result[$callResultMap[$key]] = $response;
+                      }
+                  })
+        ;
+
+        return $result;
+    }
+
 }

@@ -71,7 +71,7 @@ abstract class StandardERC20Token extends ERC20
         $amount   = Number::scaleUp($amount, $this->decimals());
         $data     = $this->buildTransferData($to, $amount);
         $nonce    = Number::toHex($this->getEth()
-            ->getTransactionCount($from, 'pending'));
+                                       ->getTransactionCount($from, 'pending'));
         $gasLimit = $this->getGasLimit('transfer');
         $gasPrice = $this->getSafeGasPrice();
 
@@ -91,8 +91,8 @@ abstract class StandardERC20Token extends ERC20
     public function buildTransferData(string $to, $amount)
     {
         return $this->getContract()
-            ->at($this->contractAddress)
-            ->getData('transfer', $to, $amount)
+                    ->at($this->contractAddress)
+                    ->getData('transfer', $to, $amount)
             ;
     }
 
@@ -101,7 +101,7 @@ abstract class StandardERC20Token extends ERC20
         $amount   = Number::scaleUp($amount, $this->decimals());
         $data     = $this->buildApproveData($spenderAddress, $amount);
         $nonce    = Number::toHex($this->getEth()
-            ->getTransactionCount($ownerAddress, 'pending'));
+                                       ->getTransactionCount($ownerAddress, 'pending'));
         $gasLimit = $this->getGasLimit('approve');
         $gasPrice = $this->getSafeGasPrice();
 
@@ -120,8 +120,8 @@ abstract class StandardERC20Token extends ERC20
     public function buildApproveData(string $to, $amount)
     {
         return $this->getContract()
-            ->at($this->contractAddress)
-            ->getData('approve', $to, $amount)
+                    ->at($this->contractAddress)
+                    ->getData('approve', $to, $amount)
             ;
     }
 
@@ -142,7 +142,7 @@ abstract class StandardERC20Token extends ERC20
         $amount   = Number::scaleUp($amount, $this->decimals());
         $data     = $this->buildTransferFromData($from, $to, $amount);
         $nonce    = Number::toHex($this->getEth()
-            ->getTransactionCount($spender, 'pending'));
+                                       ->getTransactionCount($spender, 'pending'));
         $gasLimit = $this->getGasLimit('transferFrom');
         $gasPrice = $this->getSafeGasPrice();
 
@@ -174,7 +174,7 @@ abstract class StandardERC20Token extends ERC20
         return $builder;
     }
 
-    public function transactions(string $address, $fromBlock = '0x0', $toBlock = 'latest')
+    public function logs(string $address, $fromBlock = '0x0', $toBlock = 'latest')
     {
         $topic_address = Address::toTopic($address);
 
@@ -192,6 +192,11 @@ abstract class StandardERC20Token extends ERC20
         }
 
         return $txs;
+    }
+
+    public function transactions(string $address, $fromBlock = '0x0', $toBlock = 'latest')
+    {
+        return $this->logs($address, $fromBlock, $toBlock);
     }
 
     public function getGasLimit($action = '')

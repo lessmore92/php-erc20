@@ -40,7 +40,7 @@ var_dump($token->name());
 ```
 
 ## Ethereum RPC Client
-For connect to Ethereum blockchain you need an Ethereum node; [Infura](https://infura.io/) is a simple and fast solution, however you can lunch you [Geth](https://geth.ethereum.org/) node
+For connect to Ethereum blockchain you need an Ethereum node; [Infura](https://infura.io/) is a simple and fast solution, however you can launch you [Geth](https://geth.ethereum.org/) node
 
  
 

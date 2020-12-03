@@ -14,12 +14,12 @@ There are two ways to use:
 See below to find out more
 
 
-## 1-Make a new class for your token
+### 1-Make a new class for your token
 Simply create a new class inherits from `\Lessmore\Ethereum\Foundation\StandardERC20Token`
 
 in below sample we create a new class for Tether (USDT)
 ```
-class USDT extends \Lessmore\Ethereum\Token  
+class USDT extends \Lessmore\Ethereum\Foundation\StandardERC20Token 
 {
     protected $contractAddress = "0xdac17f958d2ee523a2206206994597c13d831ec7";  
 }
@@ -32,15 +32,28 @@ var_dump($tether->name());
 var_dump($tether->decimals());
 ```
 
-#### 2- Use general class
+### 2- Use general class
 
 ```
-$token = new \Lessmore\Ethereum\Token("0xc6fDe3FD2Cc2b173aEC24cc3f267cb3Cd78a26B7", "https://mainnet.infura.io/v3/API_KEY");
+$token = new \Lessmore\Ethereum\Token("0xdac17f958d2ee523a2206206994597c13d831ec7", "https://mainnet.infura.io/v3/API_KEY");
 var_dump($token->name());
+```
+
+
+### Connection Timeout
+
+Connection timeout can be set by last parameter of token class
+
+```
+$timeout  = 3; //secs
+$tether = new USDT("https://mainnet.infura.io/v3/API_KEY",$timeout);
+```
+OR
+```
+$timeout  = 3; //secs
+$tether = new \Lessmore\Ethereum\Token("0xdac17f958d2ee523a2206206994597c13d831ec7", "https://mainnet.infura.io/v3/API_KEY", $timeout);
 ```
 
 ## Ethereum RPC Client
 For connect to Ethereum blockchain you need an Ethereum node; [Infura](https://infura.io/) is a simple and fast solution, however you can launch you [Geth](https://geth.ethereum.org/) node
-
- 
 

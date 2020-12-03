@@ -5,10 +5,10 @@
  * Time: 2:19 AM
  */
 
-namespace Lessmore\Ethereum;
+namespace Lessmore92\Ethereum;
 
-use Lessmore\Ethereum\Foundation\StandardERC20Token;
-use Lessmore\Ethereum\Utils\Number;
+use Lessmore92\Ethereum\Foundation\StandardERC20Token;
+use Lessmore92\Ethereum\Utils\Number;
 
 
 class Token extends StandardERC20Token

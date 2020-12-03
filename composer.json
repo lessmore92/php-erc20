@@ -10,7 +10,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "Lessmore\\Ethereum\\": "src"
+      "Lessmore92\\Ethereum\\": "src"
     }
   },
   "minimum-stability": "dev",

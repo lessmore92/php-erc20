@@ -5,7 +5,7 @@
  * Time: 5:20 AM
  */
 
-namespace Lessmore\Ethereum\Utils;
+namespace Lessmore92\Ethereum\Utils;
 
 
 use phpseclib\Math\BigInteger;

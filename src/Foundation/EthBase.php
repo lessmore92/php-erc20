@@ -5,7 +5,7 @@
  * Time: 2:19 AM
  */
 
-namespace Lessmore\Ethereum\Foundation;
+namespace Lessmore92\Ethereum\Foundation;
 
 use Web3\Eth as BaseEth;
 use Web3\Web3;

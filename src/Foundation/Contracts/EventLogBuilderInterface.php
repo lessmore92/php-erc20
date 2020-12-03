@@ -5,10 +5,10 @@
  * Time: 5:03 AM
  */
 
-namespace Lessmore\Ethereum\Foundation\Contracts;
+namespace Lessmore92\Ethereum\Foundation\Contracts;
 
 
-use Lessmore\Ethereum\Foundation\ERC20;
+use Lessmore92\Ethereum\Foundation\ERC20;
 
 interface EventLogBuilderInterface
 {

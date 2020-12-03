@@ -5,11 +5,11 @@
  * Time: 2:21 AM
  */
 
-namespace Lessmore\Ethereum\Foundation\Transaction;
+namespace Lessmore92\Ethereum\Foundation\Transaction;
 
 
 use Exception;
-use Lessmore\Ethereum\Foundation\Eth;
+use Lessmore92\Ethereum\Foundation\Eth;
 
 class SignedTransaction
 {

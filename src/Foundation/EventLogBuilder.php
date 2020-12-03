@@ -5,10 +5,10 @@
  * Time: 5:03 AM
  */
 
-namespace Lessmore\Ethereum\Foundation;
+namespace Lessmore92\Ethereum\Foundation;
 
 
-use Lessmore\Ethereum\Foundation\Contracts\EventLogBuilderInterface;
+use Lessmore92\Ethereum\Foundation\Contracts\EventLogBuilderInterface;
 
 class EventLogBuilder implements EventLogBuilderInterface
 {

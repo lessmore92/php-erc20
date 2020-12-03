@@ -5,7 +5,7 @@
  * Time: 5:26 AM
  */
 
-namespace Lessmore\Ethereum\Utils;
+namespace Lessmore92\Ethereum\Utils;
 
 
 use Web3p\EthereumUtil\Util;

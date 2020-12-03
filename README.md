@@ -15,11 +15,11 @@ See below to find out more
 
 
 ### 1-Make a new class for your token
-Simply create a new class inherits from `\Lessmore\Ethereum\Foundation\StandardERC20Token`
+Simply create a new class inherits from `\Lessmore92\Ethereum\Foundation\StandardERC20Token`
 
 in below sample we create a new class for Tether (USDT)
 ```
-class USDT extends \Lessmore\Ethereum\Foundation\StandardERC20Token 
+class USDT extends \Lessmore92\Ethereum\Foundation\StandardERC20Token 
 {
     protected $contractAddress = "0xdac17f958d2ee523a2206206994597c13d831ec7";  
 }
@@ -35,7 +35,7 @@ var_dump($tether->decimals());
 ### 2- Use general class
 
 ```
-$token = new \Lessmore\Ethereum\Token("0xdac17f958d2ee523a2206206994597c13d831ec7", "https://mainnet.infura.io/v3/API_KEY");
+$token = new \Lessmore92\Ethereum\Token("0xdac17f958d2ee523a2206206994597c13d831ec7", "https://mainnet.infura.io/v3/API_KEY");
 var_dump($token->name());
 ```
 
@@ -51,7 +51,7 @@ $tether = new USDT("https://mainnet.infura.io/v3/API_KEY",$timeout);
 OR
 ```
 $timeout  = 3; //secs
-$tether = new \Lessmore\Ethereum\Token("0xdac17f958d2ee523a2206206994597c13d831ec7", "https://mainnet.infura.io/v3/API_KEY", $timeout);
+$tether = new \Lessmore92\Ethereum\Token("0xdac17f958d2ee523a2206206994597c13d831ec7", "https://mainnet.infura.io/v3/API_KEY", $timeout);
 ```
 
 ## Ethereum RPC Client

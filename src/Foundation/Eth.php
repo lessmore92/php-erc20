@@ -5,7 +5,7 @@
  * Time: 2:19 AM
  */
 
-namespace Lessmore\Ethereum\Foundation;
+namespace Lessmore92\Ethereum\Foundation;
 
 
 class Eth extends EthBase

@@ -5,12 +5,12 @@
  * Time: 2:19 AM
  */
 
-namespace Lessmore\Ethereum\Foundation;
+namespace Lessmore92\Ethereum\Foundation;
 
-use Lessmore\Ethereum\Foundation\Contracts\EventLogBuilderInterface;
-use Lessmore\Ethereum\Foundation\Transaction\TransactionBuilder;
-use Lessmore\Ethereum\Utils\Address;
-use Lessmore\Ethereum\Utils\Number;
+use Lessmore92\Ethereum\Foundation\Contracts\EventLogBuilderInterface;
+use Lessmore92\Ethereum\Foundation\Transaction\TransactionBuilder;
+use Lessmore92\Ethereum\Utils\Address;
+use Lessmore92\Ethereum\Utils\Number;
 
 
 abstract class StandardERC20Token extends ERC20

@@ -5,10 +5,10 @@
  * Time: 1:59 AM
  */
 
-namespace Lessmore\Ethereum\Foundation\Transaction;
+namespace Lessmore92\Ethereum\Foundation\Transaction;
 
 use kornrunner\Ethereum\Transaction as BaseTransaction;
-use Lessmore\Ethereum\Foundation\Eth;
+use Lessmore92\Ethereum\Foundation\Eth;
 
 class TransactionBuilder
 {

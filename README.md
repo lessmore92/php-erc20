@@ -66,8 +66,8 @@ In these cases your app should pay fee behalf of users.
 
 
 ## `transferFrom` Flow:
-1.First `approve` grants permissions to a delegator.  
-2.Use `transferFrom` method to make transaction behalf of user. 
+1.First, Using `approve` method to grant permission to a delegator.  
+2.Then, Using `transferFrom` method to make transaction behalf of user. 
 
 *In Action*
 ```

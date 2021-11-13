@@ -66,14 +66,20 @@ abstract class StandardERC20Token extends ERC20
      * @param float $amount
      * @return Transaction\Transaction
      */
-    public function transfer(string $from, string $to, float $amount)
+    public function transfer(string $from, string $to, float $amount, string $gasLimit = 'default', string $gasPrice = 'default')
     {
-        $amount   = Number::scaleUp($amount, $this->decimals());
-        $data     = $this->buildTransferData($to, $amount);
-        $nonce    = Number::toHex($this->getEth()
-                                       ->getTransactionCount($from, 'pending'));
-        $gasLimit = $this->getGasLimit('transfer');
-        $gasPrice = $this->getSafeGasPrice();
+        $amount = Number::scaleUp($amount, $this->decimals());
+        $data   = $this->buildTransferData($to, $amount);
+        $nonce  = Number::toHex($this->getEth()
+                                     ->getTransactionCount($from, 'pending'));
+        if (strtolower($gasLimit) === 'default')
+        {
+            $gasLimit = $this->getGasLimit('transfer');
+        }
+        if (strtolower($gasPrice) === 'default')
+        {
+            $gasPrice = $this->getSafeGasPrice();
+        }
 
         return (new TransactionBuilder())
             ->setEth($this->getEth())
@@ -96,14 +102,20 @@ abstract class StandardERC20Token extends ERC20
             ;
     }
 
-    public function approve(string $ownerAddress, string $spenderAddress, string $amount)
+    public function approve(string $ownerAddress, string $spenderAddress, string $amount, string $gasLimit = 'default', string $gasPrice = 'default')
     {
-        $amount   = Number::scaleUp($amount, $this->decimals());
-        $data     = $this->buildApproveData($spenderAddress, $amount);
-        $nonce    = Number::toHex($this->getEth()
-                                       ->getTransactionCount($ownerAddress, 'pending'));
-        $gasLimit = $this->getGasLimit('approve');
-        $gasPrice = $this->getSafeGasPrice();
+        $amount = Number::scaleUp($amount, $this->decimals());
+        $data   = $this->buildApproveData($spenderAddress, $amount);
+        $nonce  = Number::toHex($this->getEth()
+                                     ->getTransactionCount($ownerAddress, 'pending'));
+        if (strtolower($gasLimit) === 'default')
+        {
+            $gasLimit = $this->getGasLimit('approve');
+        }
+        if (strtolower($gasPrice) === 'default')
+        {
+            $gasPrice = $this->getSafeGasPrice();
+        }
 
         return (new TransactionBuilder())
             ->setEth($this->getEth())
@@ -137,14 +149,20 @@ abstract class StandardERC20Token extends ERC20
      * @param float $amount
      * @return Transaction\Transaction
      */
-    public function transferFrom(string $spender, string $from, string $to, float $amount)
+    public function transferFrom(string $spender, string $from, string $to, float $amount, string $gasLimit = 'default', string $gasPrice = 'default')
     {
-        $amount   = Number::scaleUp($amount, $this->decimals());
-        $data     = $this->buildTransferFromData($from, $to, $amount);
-        $nonce    = Number::toHex($this->getEth()
-                                       ->getTransactionCount($spender, 'pending'));
-        $gasLimit = $this->getGasLimit('transferFrom');
-        $gasPrice = $this->getSafeGasPrice();
+        $amount = Number::scaleUp($amount, $this->decimals());
+        $data   = $this->buildTransferFromData($from, $to, $amount);
+        $nonce  = Number::toHex($this->getEth()
+                                     ->getTransactionCount($spender, 'pending'));
+        if (strtolower($gasLimit) === 'default')
+        {
+            $gasLimit = $this->getGasLimit('transferFrom');
+        }
+        if (strtolower($gasPrice) === 'default')
+        {
+            $gasPrice = $this->getSafeGasPrice();
+        }
 
         return (new TransactionBuilder())
             ->setEth($this->getEth())
